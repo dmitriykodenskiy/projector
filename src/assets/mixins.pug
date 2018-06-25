@@ -1,0 +1,26 @@
+mixin comments(prefix, items, number)
+  - wrapperClass = prefix + "-wrapper";
+  each item, index in items
+    - 
+      commentClass = prefix + "-block";
+      if (number === "") {
+        itemNumber = index+1;
+      } else{
+        itemNumber = number + "." + (index + 1);
+      }
+      
+    +b.DIV(class=wrapperClass)
+      +e.IMG(src=item.userPic alt="image for article").avatar
+      +b.DIV(class=commentClass)
+        +e.P.heading
+          +e.SPAN= itemNumber
+          |.
+          +e.A.comment-title= item.userName
+          +e.SPAN.publishDate= item.date
+        +e.P.comment-text!= item.comment
+        +b.P.actions
+          +e.A.reply reply
+          | 
+          +e.A.share share
+        if item.children
+          +comments("sub-" + prefix, item.children, itemNumber)
